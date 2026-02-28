@@ -170,14 +170,15 @@ export class Xterm {
 
         terminal.attachCustomKeyEventHandler((event: KeyboardEvent) => {
             if (
-                event.type === 'keydown' &&
                 event.key === 'Enter' &&
                 event.shiftKey &&
                 !event.ctrlKey &&
                 !event.altKey &&
                 !event.metaKey
             ) {
-                this.sendData('\x1b\r');
+                if (event.type === 'keydown') {
+                    this.sendData('\x1b\r');
+                }
                 return false;
             }
             return true;
