@@ -24,6 +24,7 @@ export class Terminal extends Component<Props, State> {
 
     async componentDidMount() {
         await this.xterm.refreshToken();
+        await document.fonts.load('14px JetBrains');
         this.xterm.open(this.container);
         this.xterm.connect();
     }

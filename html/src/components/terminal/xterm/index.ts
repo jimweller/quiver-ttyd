@@ -167,6 +167,19 @@ export class Xterm {
 
         terminal.open(parent);
         fitAddon.fit();
+
+        setTimeout(() => {
+            const fs = terminal.options.fontSize || 14;
+            terminal.options.fontSize = fs + 1;
+            terminal.options.fontSize = fs;
+            fitAddon.fit();
+        }, 250);
+        setTimeout(() => {
+            const fs = terminal.options.fontSize || 14;
+            terminal.options.fontSize = fs + 1;
+            terminal.options.fontSize = fs;
+            fitAddon.fit();
+        }, 1000);
     }
 
     @bind

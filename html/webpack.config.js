@@ -21,6 +21,10 @@ const baseConfig = {
     module: {
         rules: [
             {
+                test: /\.(ttf|otf|eot|woff|woff2)$/,
+                type: 'asset/inline',
+            },
+            {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
                 exclude: /node_modules/,
