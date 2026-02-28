@@ -1,0 +1,67 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (e.g. 1.7.7-quiver.1). Leave empty for build-only."
+        required: false
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Build frontend
+        run: |
+          cd html
+          corepack enable
+          corepack prepare yarn@3.6.3 --activate
+          yarn install
+          yarn run check
+          yarn run build
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y autoconf automake build-essential cmake curl file libtool
+
+      - name: Build backend (x86_64)
+        run: |
+          BUILD_TARGET=x86_64 scripts/cross-build.sh
+
+      - name: Prepare release artifacts
+        run: |
+          mkdir -p release
+          cp build/ttyd release/ttyd.x86_64
+          cd release
+          sha256sum ttyd.* > SHA256SUMS
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ttyd-x86_64
+          path: release/
+
+      - name: Create release
+        if: inputs.tag
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: "release/*"
+          tag: ${{ inputs.tag }}
+          name: "quiver-ttyd ${{ inputs.tag }}"
+          body: "quiver-ttyd ${{ inputs.tag }}"
