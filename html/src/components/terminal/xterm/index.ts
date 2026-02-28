@@ -169,13 +169,7 @@ export class Xterm {
         fitAddon.fit();
 
         terminal.attachCustomKeyEventHandler((event: KeyboardEvent) => {
-            if (
-                event.key === 'Enter' &&
-                event.shiftKey &&
-                !event.ctrlKey &&
-                !event.altKey &&
-                !event.metaKey
-            ) {
+            if (event.key === 'Enter' && event.shiftKey && !event.ctrlKey && !event.altKey && !event.metaKey) {
                 if (event.type === 'keydown') {
                     this.sendData('\x1b\r');
                 }
