@@ -168,10 +168,16 @@ export class Xterm {
         terminal.open(parent);
         fitAddon.fit();
 
-        const xterm = this;
         terminal.attachCustomKeyEventHandler((event: KeyboardEvent) => {
-            if (event.type === 'keydown' && event.key === 'Enter' && event.shiftKey && !event.ctrlKey && !event.altKey && !event.metaKey) {
-                xterm.sendData('\x1b[13;2u');
+            if (
+                event.type === 'keydown' &&
+                event.key === 'Enter' &&
+                event.shiftKey &&
+                !event.ctrlKey &&
+                !event.altKey &&
+                !event.metaKey
+            ) {
+                this.sendData('\x1b[13;2u');
                 return false;
             }
             return true;
