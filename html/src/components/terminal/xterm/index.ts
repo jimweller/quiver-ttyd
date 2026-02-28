@@ -177,7 +177,7 @@ export class Xterm {
                 !event.altKey &&
                 !event.metaKey
             ) {
-                this.sendData('\x1b[13;2u');
+                this.sendData('\x1b\r');
                 return false;
             }
             return true;
