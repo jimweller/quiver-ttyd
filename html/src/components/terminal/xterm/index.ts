@@ -168,6 +168,15 @@ export class Xterm {
         terminal.open(parent);
         fitAddon.fit();
 
+        const xterm = this;
+        terminal.attachCustomKeyEventHandler((event: KeyboardEvent) => {
+            if (event.type === 'keydown' && event.key === 'Enter' && event.shiftKey && !event.ctrlKey && !event.altKey && !event.metaKey) {
+                xterm.sendData('\x1b[13;2u');
+                return false;
+            }
+            return true;
+        });
+
         setTimeout(() => {
             const fs = terminal.options.fontSize || 14;
             terminal.options.fontSize = fs + 1;
