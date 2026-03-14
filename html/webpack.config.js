@@ -22,7 +22,11 @@ const baseConfig = {
         rules: [
             {
                 test: /\.(ttf|otf|eot|woff|woff2)$/,
-                type: 'asset/inline',
+                type: 'asset/resource',
+                generator: {
+                    filename: 'fonts/[name][ext]',
+                    publicPath: '/static/',
+                },
             },
             {
                 test: /\.tsx?$/,
